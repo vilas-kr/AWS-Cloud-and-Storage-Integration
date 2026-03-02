@@ -1,0 +1,94 @@
+Creating Custom Virtual Private Cloud
+
+Step 1: Create custom VPC
+--------------------------------------------------------
+1. Login to AWS Console
+2. Search "VPC"
+3. Click "Create VPC"
+4. Choose VPC type: VPC only
+5. Now fill 
+    * Name: mention your vpc Name
+    * IPv4 CIDR block: Enable "IPv4 CIDR manual input"
+    * IPv4 CIDR: 10.0.0.0/16 
+        this gives 65,536 IP addresses inside this VPC
+    * Tenancy: Default
+6. Click "Create VPC"
+
+
+Step 2: Create Public Subnet
+---------------------------------------------------------
+1. Go to "Subnets"
+2. Click "Create Subnet"
+3. Fill
+    * VPC ID: select your VPC
+    * Subnet Name: enter subnet name
+    * Availability Zone: select your region
+    * CIDR: 10.0.1.0/24
+        this gives 256 IP addresses 
+4. Click "Create Subnet"
+
+
+Step 3: Create Internet Gateway
+---------------------------------------------------------
+1. Go to Internet Gateways
+2. Click "Create Internet Gateway"
+3. Fill
+    * Name: enter IGW name
+4. Click "Create Internet Gateway"
+5. Click on Internet Gateway ID
+6. Go to "Actions"
+7. Click on "Attach to VPC"
+8. Fill
+    * VPC ID: select your VPC
+9. Click on "Attach"
+
+
+Step 4: Create Route Table
+---------------------------------------------------------
+1. Go to Route Tables
+2. Click "Create Route Table"
+3. Fill
+    * Name: enter route table name
+    * VPC: select your VPC
+4. Click "Create route table"
+5. Click on Route Table ID
+6. Go to "Routes"
+7. Click "Edit Routes"
+8. Click on "Add Routes"
+9. Fill
+    * Destination: 0.0.0.0/0 
+    * Target: select "Internet Gateway" -> Select your internet Gateway
+10. Click "Save Changes"
+11. Go to Route Tables
+12. Click on Route table ID
+13. Click "Actions"
+14. Click "Edit subnet associations"
+15. Select subnet
+16. Click "Save associations"
+
+
+Step 5: Create Security Group
+---------------------------------------------------------
+1. Go to Security Groups
+2. Click "Create security group"
+3. Fill
+    * Security Group Name: enter security group name
+    * Description: enter description
+    * VPC: Select your VPC
+4. Add Inbound rules:
+    * Type: select type
+    * Port: enter port
+    * Source: select "My IP"
+5. Click "Create Security Group"
+
+Now your Virtual Private Cloud is ready to use
+
+
+What you have done:
+---------------------------------------------------------
+1. Create VPC with CIDR
+2. Create Subnet
+3. Create Internet Gateway and attach
+4. Create Route Table and add 0.0.0.0/0 route
+    and Associate subnet to route table
+5. Create Security Group
