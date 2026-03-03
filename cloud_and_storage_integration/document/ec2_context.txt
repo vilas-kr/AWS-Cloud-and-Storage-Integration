@@ -1,0 +1,65 @@
+Part 5: Running Python Scripts on EC2 and Understanding IAM Roles
+
+1.  How the Same Python Scripts Run on an EC2 Instance
+
+An EC2 instance is simply a virtual machine hosted in AWS cloud. It
+works like a remote computer. If a Python script runs on a local laptop,
+it can also run on EC2 without changing the core logic of the script.
+
+To run the script on EC2: 
+- Launch an EC2 instance
+- Install Python and required libraries
+- Upload the Python script to the EC2 instance
+- Run the script using the terminal.
+
+The only difference is that execution happens in the cloud instead of a
+local machine. This is useful when processing large datasets or running
+production workloads.
+
+------------------------------------------------------------------------
+
+2.  Difference Between Running Scripts Locally and on EC2
+
+Running Locally: 
+- Uses your personal laptop resources 
+- Limited by your system’s CPU and RAM
+- Stops when your laptop shuts down
+- Requires manual configuration of AWS access keys
+
+Running on EC2: 
+- Uses AWS cloud infrastructure
+- Can scale to larger instance types if needed
+- Can run continuously (24/7)
+- Better suited for production environments 
+- Can securely access AWS services using IAM roles
+
+EC2 is preferred in real-world production systems because it offers
+scalability, reliability, and better integration with other AWS
+services.
+
+------------------------------------------------------------------------
+
+3.  How IAM Roles Replace Access Keys on EC2
+
+Normally, when running scripts locally, AWS access keys are stored using
+the ‘aws configure’ command. This means Access Key and Secret Key are
+saved on the system.
+
+This approach has security risks: 
+- Keys can be leaked
+- Keys can be hardcoded in scripts 
+- Manual rotation is required
+
+A better and secure method is using IAM Roles.
+
+When an IAM role is attached to an EC2 instance: 
+The instance automatically receives temporary credentials, No access keys 
+need to be stored, The AWS SDK automatically uses these credentials, 
+Credentials  are rotated automatically by AWS.
+
+This improves security because: 
+- No secrets are stored in code 
+- Access is temporary and controlled
+- Permissions are defined through policies
+
+
