@@ -9,7 +9,7 @@ from boto3.exceptions import S3UploadFailedError
 class S3FileService:
     
     def __init__(self, aws_region: str):
-        self.s3_client = boto3.client('s3', region_name=aws_region)
+        S3FileService.s3_client = boto3.client('s3', region_name=aws_region)
 
     def upload_file_to_s3(self, 
         file_path: str, 
@@ -32,7 +32,7 @@ class S3FileService:
         try:
             logging.info(f'Uploading {file_path} to bucket {bucket_name}.')
             local_md5 = self.calculate_md5(file_path)
-            self.s3_client.upload_file(
+            S3FileService.s3_client.upload_file(
                 file_path, 
                 bucket_name, s3_key, 
                 ExtraArgs={
@@ -76,7 +76,7 @@ class S3FileService:
             
             # Check bucket if exist or not
             try:
-                self.s3_client.head_bucket(Bucket=bucket_name)
+                S3FileService.s3_client.head_bucket(Bucket=bucket_name)
                 
             except ClientError as e:
                 error_code = e.response['Error']['Code']
@@ -94,12 +94,13 @@ class S3FileService:
                     f'Downloading {s3_key} from bucket '
                     f'{bucket_name}...'
                 )
-                self.s3_client.download_file(
+                S3FileService.s3_client.download_file(
                     bucket_name, 
                     s3_key, 
                     os.path.join(download_dir, os.path.basename(s3_key))
                 )
-                logging.info('File downloaded successfully')
+                logging.info(f'File downloaded successfully saved in path '
+                    f'{os.path.join(download_dir, os.path.basename(s3_key))}')
                 
             except ClientError as e:
                 error_code = e.response['Error']['Code']
@@ -125,15 +126,16 @@ class S3FileService:
             
         """
         try:
-            paginator = self.s3_client.get_paginator('list_objects_v2')
+            paginator = S3FileService.s3_client.get_paginator('list_objects_v2')
 
             found = False
+            logging.info(f'Files in {bucket_name} bucket')
             for page in paginator.paginate(Bucket=bucket_name):
                 for obj in page.get('Contents', []):
                     found = True
                     logging.info(
-                        f'{obj['Key']} \t {obj['Size']} bytes \t '
-                        f'Last Modified: {obj['LastModified']}'
+                        f'- {obj["Key"]} {obj["Size"]} bytes '
+                        f'Last Modified: {obj["LastModified"]}'
                     )
             
             if not found:
@@ -193,8 +195,7 @@ class S3FileService:
         """
         local_md5 = self.calculate_md5(file_path)
         
-        s3_client = boto3.client('s3')
-        response = s3_client.head_object(Bucket=bucket_name, Key=s3_key)
+        response = S3FileService.s3_client.head_object(Bucket=bucket_name, Key=s3_key)
         remote_md5 = response['Metadata']['md5']
         
         if local_md5 == remote_md5:

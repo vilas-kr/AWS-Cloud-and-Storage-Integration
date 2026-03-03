@@ -3,7 +3,7 @@ import os
 import hashlib
 
 from botocore.exceptions import ClientError
-from upload_file_to_s3 import calculate_md5
+from scripts.upload_file_to_s3 import calculate_md5
 
 def download_file_from_s3(bucket_name, s3_key, download_dir):
     """ Download a file from an S3 bucket and save it to a specified 
@@ -96,7 +96,7 @@ def list_files_in_s3_bucket(bucket_name):
         for page in paginator.paginate(Bucket=bucket_name):
             for obj in page.get('Contents', []):
                 found = True
-                print(f'{obj['Key']} \t {obj['Size']} bytes \t Last Modified: {obj['LastModified']}')
+                print(f'{obj["Key"]} \t {obj["Size"]} bytes \t Last Modified: {obj["LastModified"]}')
         
         if not found:
             print(f'Bucket is empty.')

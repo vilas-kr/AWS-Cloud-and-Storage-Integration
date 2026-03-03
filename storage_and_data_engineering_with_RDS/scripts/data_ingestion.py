@@ -22,7 +22,7 @@ def main():
         file_path,
         settings.BUCKET_NAME,
         s3_key
-        )
+    )
     
     # List all files in s3 bucket
     s3.list_files_in_s3_bucket(settings.BUCKET_NAME)
