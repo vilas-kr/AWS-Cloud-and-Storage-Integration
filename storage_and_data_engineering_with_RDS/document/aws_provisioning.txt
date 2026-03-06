@@ -1,0 +1,39 @@
+Steps to create S3 Bucket, RDS Instance, Security Groups and Connections, and Accessing EC2 Instance.
+
+1. Create an S3 Bucket to Act as a Raw Data Lake
+    1. Log in to the AWS Management Console.
+    2. Navigate to S3 and click Create bucket.
+    3. Provide a unique bucket name and select the AWS region.
+    4. Configure settings such as versioning, encryption (optional), and access permissions.
+    5. Click Create bucket.
+
+2. Configure Security Groups and Connectivity
+    1. Search VPC in search box in the AWS Management Console.
+    2. Go to Security Groups and click create security group.
+    3. Enter Security group name, Add description, select VPC where you want to create this security group.
+    4. In Inboud Rule: Click add rul and select:
+            Type: MSSQL,
+            source: Anywhere
+    5. Click create security group.
+    Note: We use this security group to create RDS.
+
+3. Provision an AWS RDS Instance (PostgreSQL or MySQL)
+    1. Search RDS in search box in the AWS Management Console.
+    2. Click Create database 
+    3. Choose a database creation method as Full configuration.
+    4. select MSSQL engine.
+    5. Choose Free tier in Template.
+    6. In settings set DB instance identifier name, master username(mostly 'admin'), and password.
+    7. Configure instance type (db.t3.micro is free), storage(upto 20GB free), and availability settings.
+    8. In connectivity select a VPC in which you want create this RDS, then select subnet and security group for 
+        this RDS and allow public access.
+    9. In Additional configuration Backup section set Backup retention period to 1.
+    10. Click Create database.
+    
+4. Validate access from local system or EC2
+    We can validate it in local machine as well as EC2 instance.
+    Local Machine: 
+    1. Open any Database client such as For MSSQL we have SSMS(in windows) and Azure DataStudio(in mac).
+    2. Click on New Connection -> now enter server endpoint from RDS, username, password.
+    3. Click on connect and wait for connection to be established.
+    4. Once connected execute any query if it is executing properly the connection is correct.
