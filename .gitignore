@@ -1,5 +1,7 @@
 */document/AWS *
 .venv
 .env
+*.csv
 
 __pycache__
+practice
